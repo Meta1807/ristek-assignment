@@ -13,6 +13,10 @@ router.get('/user/logout', async (req, res, next) => {
       .json({
         message: 'You have successfully logged out.'
       })
+  } else {
+    res.json({
+      message: 'You are not logged in.'
+    })
   }
 });
 

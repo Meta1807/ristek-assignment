@@ -70,6 +70,12 @@ router.post('/post/create', async (req, res, next) => {
           message: 'An error occurred while creating the post.'
         })
     }
+  } else {
+    res
+      .status(401)
+      .json({
+        message: 'You are not logged in.',
+      })
   }
 })
 
@@ -95,6 +101,12 @@ router.post('/post/edit', async (req, res, next) => {
           message: 'An error occurred while updating the post.'
         })
     }
+  } else {
+    res
+      .status(401)
+      .json({
+        message: 'You are not logged in.',
+      })
   }
 })
 
@@ -118,6 +130,12 @@ router.post('/post/remove', async (req, res, next) => {
           message: 'An error occurred while updating the post.'
         })
     }
+  } else {
+    res
+      .status(401)
+      .json({
+        message: 'You are not logged in.',
+      })
   }
 })
 

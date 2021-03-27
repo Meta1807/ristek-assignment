@@ -1,7 +1,7 @@
 # Ristek Assignment - Backend
 ## By: Adrian Ardizza - Ilmu Komputer 2020
 
-This project was made as the author's RISTEK Fasilkom (Web Dev) assignment. It is written in JavaScript and uses the Express framework (API) with Prisma 2-SQLite as the ORM.
+This project was made as the author's RISTEK Fasilkom (Web Dev) assignment. It is written in JavaScript and uses the Express framework (API) with Prisma 2 (SQLite) as the ORM.
 
 Only the API is included in this repo. I could not make an interface for it due to not having enough time (only had about 4 hours to make this because of time constraints this week).
 
@@ -16,10 +16,12 @@ Only the API is included in this repo. I could not make an interface for it due 
 ## API Documentation:
 ### User
 1. **Login (/user/login)**
-   1. **HTTP Request Method:** POST
-   2. **HTTP Request Body:**
-        - username (String): Username of the user's account.
-        - password (String): Password of the user's account.
+   
+      **HTTP Request Method:** POST
+
+      **HTTP Request Body:**
+      - username (String): Username of the user's account.
+      - password (String): Password of the user's account.
 
     **On Successful Login:** Logs in the user (Session-based auth) and returns the following message as a response:
     ```json
@@ -35,10 +37,12 @@ Only the API is included in this repo. I could not make an interface for it due 
     ```
 
 2. **Register (/user/register)**
-   1. **HTTP Request Method:** POST
-   2. **HTTP Request Body:**
-        - username (String): Username of the account to be registered.
-        - password (String): Password of the account to be registered.
+   
+      **HTTP Request Method:** POST
+
+      **HTTP Request Body:**
+      - username (String): Username of the account to be registered.
+      - password (String): Password of the account to be registered.
 
     **On Successful Registration:** Logs in the user (Session-based auth) and returns the following message as a response:
     ```json
@@ -48,8 +52,9 @@ Only the API is included in this repo. I could not make an interface for it due 
     ```
 
 ### Blog Posts
-1. **Fetch All Posts (/user/login)**
-   1. **HTTP Request Method:** GET
+1. **Fetch All Posts (/post/all)**
+   
+    **HTTP Request Method:** GET
 
     **On Successful Fetch:** Fetches all blog posts in the posts table and returns the following data as the response:
     ```json
@@ -69,5 +74,114 @@ Only the API is included in this repo. I could not make an interface for it due 
             "time": 1616852549943
         }
     ]
+    ```
+
+2. **Fetch Single Post (/post/:postId)**
+   
+    **HTTP Request Method:** GET
+
+    **On Successful Fetch:** Fetches a requested blog post (with user comments included) and returns the following data as a response:
+    ```json
+    {
+        "id": 1,
+        "authorId": 1,
+        "title": "Hackathon Time Lesgo",
+        "content": "No guys it was just a joke im actually fine",
+        "time": 1616852549943,
+        "comments": [
+            {
+                "id": 0,
+                "postId": 1,
+                "commenterId": 1,
+                "content": "Good post!",
+                "likes": 420,
+                "time": 1616853818000,
+                "users": {
+                    "id": 1,
+                    "username": "adrianardizza"
+                }
+            }
+        ]
+    }
+    ```
+
+3. **Create Post (/post/create) [REQUIRES AUTH]**
+   
+    **HTTP Request Method:** POST
+
+    **HTTP Request Body:**
+      - title (String): Title of the post.
+      - content (String): Content of the post.
+
+    **On Successful Post Creation:** Creates a new blog post with the content given by the user and returns the following response if successful:
+    ```json
+    {
+        "message": "Post successfully created."
+    }
+    ```
+
+    **On Failure (User not logged in):** Returns the following response to the user:
+    ```json
+    {
+        "message": "You are not logged in."
+    }
+    ```
+
+3. **Edit Post (/post/edit) [REQUIRES AUTH]**
+   
+    **HTTP Request Method:** POST
+
+    **HTTP Request Body:**
+      - title (String): New title for the selected blog post.
+      - content (String): New content for the selected blog post.
+      - postId (Integer): ID of the post to be updated.
+
+    **On Successful Post Creation:** Updates an existing blog post with the content given by the user (only the author can do this) and returns the following response
+    ```json
+    {
+        "message": "Post with ID <ID> successfully updated."
+    }
+    ```
+
+    **On Failure (User not logged in):** Returns the following response to the user:
+    ```json
+    {
+        "message": "You are not logged in."
+    }
+    ```
+    
+    **On Failure (Not post author/other error):** Returns the following response to the user:
+    ```json
+    {
+        "message": "An error occurred while updating the post."
+    }
+    ```
+
+4. **Delete Post (/post/remove) [REQUIRES AUTH]**
+   
+    **HTTP Request Method:** POST
+
+    **HTTP Request Body:**
+      - postId (Integer): ID of the post to be updated.
+
+    **On Successful Post Creation:** Updates an existing blog post with the content given by the user (only the author can do this) and returns the following response
+    ```json
+    {
+        "message": "Post with ID <ID> successfully updated."
+    }
+    ```
+
+    **On Failure (User not logged in):** Returns the following response to the user:
+    ```json
+    {
+        "message": "You are not logged in."
+    }
+    ```
+
+    **On Failure (Not post author/other error):** Returns the following response to the user:
+    ```json
+    {
+        "message": "An error occurred while removing the post."
+    }
     ```
 

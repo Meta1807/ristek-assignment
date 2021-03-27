@@ -80,10 +80,9 @@ const removePost = async ({
   const post = await postRef
     .findUnique({
       where: {
-        id: postId,
+        id: parseInt(postId),
       }
     })
-
   if (post.authorId === authorId) {
     const deleteStatus = await prisma.posts.delete({
       where: {
