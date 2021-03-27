@@ -110,12 +110,12 @@ const createComment = async ({
           time,
           users: {
             connect: {
-              id: commenterId,
+              id: parseInt(commenterId),
             }
           },
           posts: {
             connect: {
-              id: postId,
+              id: parseInt(postId),
             }
           }
         }

@@ -9,6 +9,7 @@ const {
   createPost,
   editPost,
   removePost,
+  createComment,
 } = require('../queries/mutations')
 
 /* User login and mutation routes */
@@ -140,7 +141,34 @@ router.post('/post/remove', async (req, res, next) => {
 })
 
 router.post('/comment/create', async (req, res, next) => {
-  
+  if (req.session.user) {
+    const data = {
+      postId: req.body.postId,
+      content: req.body.content,
+      time: Date.now(),
+      commenterId: req.session.user.id,
+    };
+    const createdComment = await createComment(data);
+    if (createdComment) {
+      res
+        .status(201)
+        .json({
+          message: 'Comment successfully created.',
+        })
+    } else {
+      res
+        .status(500)
+        .json({
+          message: 'An error occurred while creating the comment.'
+        })
+    }
+  } else {
+    res
+      .status(401)
+      .json({
+        message: 'You are not logged in.',
+      })
+  }
 })
 
 module.exports = router;

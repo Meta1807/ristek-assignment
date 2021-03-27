@@ -185,3 +185,25 @@ Only the API is included in this repo. I could not make an interface for it due 
     }
     ```
 
+5. **Create Comment (/comment/create) [REQUIRES AUTH]**
+   
+    **HTTP Request Method:** POST
+
+    **HTTP Request Body:**
+      - postId (Integer): ID of the selected post.
+      - content (String): Content of the comment.
+
+    **On Successful Post Creation:** Create a new comment on the selected post and return this as a response:
+    ```json
+    {
+        "message": "Comment successfully created."
+    }
+    ```
+
+    **On Failure (User not logged in):** Returns the following response to the user:
+    ```json
+    {
+        "message": "You are not logged in."
+    }
+    ```
+    
