@@ -40,7 +40,6 @@ const createPost = async ({
   return false;
 }
 
-
 const editPost = async ({
   title,
   content,
@@ -97,9 +96,43 @@ const removePost = async ({
   }
 }
 
+const createComment = async ({
+  postId,
+  commenterId,
+  content,
+  time,
+}) => {
+  if (postId && content && time && commenterId) {
+    const createComment = await prisma
+      .comments
+      .create({
+        data: {
+          content,
+          time,
+          users: {
+            connect: {
+              id: commenterId,
+            }
+          },
+          posts: {
+            connect: {
+              id: postId,
+            }
+          }
+        }
+      })
+    if (createComment) {
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
+
 module.exports = {
   register,
   createPost,
   editPost,
   removePost,
+  createComment,
 }
